@@ -55,11 +55,10 @@ func TagKind(tag string) (string, error) {
 }
 
 func tagKind(tag string, isValidKind func(string) bool) (string, error) {
-	i := strings.Index(tag, "-")
-	if i <= 0 {
-		return "", fmt.Errorf(`tags must be in the "<kind>-<id>" format, got %q`, tag)
+	kind, _, err := splitTag(tag)
+	if err != nil {
+		return "", err
 	}
-	kind := tag[:i]
 	if !isValidKind(kind) {
 		return "", fmt.Errorf("unsupported tag kind %q", kind)
 	}
@@ -77,12 +76,12 @@ func validKinds(kind string) bool {
 	return false
 }
 
-func splitTag(tag string) (string, string, error) {
-	kind, err := TagKind(tag)
-	if err != nil {
-		return "", "", err
+func splitTag(tag string) (kind string, id string, err error) {
+	i := strings.Index(tag, "-")
+	if i <= 0 {
+		return "", "", fmt.Errorf(`tags must be in the "<kind>-<id>" format, got %q`, tag)
 	}
-	return kind, tag[len(kind)+1:], nil
+	return tag[:i], tag[i+1:], nil
 }
 
 // ParseTag parses a string representation into a Tag.
