@@ -24,19 +24,31 @@ func (t UnitTag) Id() string     { return unitTagSuffixToId(t.name) }
 // NewUnitTag returns the tag for the unit with the given name.
 // It will panic if the given unit name is not valid.
 func NewUnitTag(unitName string) UnitTag {
-	tag, ok := tagFromUnitName(unitName)
-	if !ok {
-		panic(fmt.Sprintf("%q is not a valid unit name", unitName))
+    tag, err := newUnitTag(unitName)
+	if err != nil {
+		panic(err.Error())
 	}
 	return tag
 }
 
+func newUnitTag(unitName string) (UnitTag, error) {
+	tag, ok := tagFromUnitName(unitName)
+	if !ok {
+		return UnitTag{}, fmt.Errorf("%q is not a valid unit name", unitName)
+	}
+	return tag, nil
+}
+
 // ParseUnitTag parses a unit tag string.
 func ParseUnitTag(unitTag string) (UnitTag, error) {
-	tag, err := ParseTag(unitTag)
+    kind, id, err := parseTag(unitTag)
 	if err != nil {
 		return UnitTag{}, err
 	}
+    if kind != UnitTagKind {
+        return UnitTag, invalidTagError(unitTag, UnitTagKind, 
+    }
+	tag, err := ParseTag(unitTag)
 	ut, ok := tag.(UnitTag)
 	if !ok {
 		return UnitTag{}, invalidTagError(unitTag, UnitTagKind, nil)

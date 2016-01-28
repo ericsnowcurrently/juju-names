@@ -92,6 +92,7 @@ func ParseTag(tag string) (Tag, error) {
 
 	switch kind {
 	case UnitTagKind:
+		return newUnitTag(id)
 		id = unitTagSuffixToId(id)
 		if !IsValidUnit(id) {
 			return nil, invalidTagError(tag, kind, nil)
