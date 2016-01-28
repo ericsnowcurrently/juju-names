@@ -51,11 +51,19 @@ func tagString(tag Tag) string {
 // TagKind returns one of the *TagKind constants for the given tag, or
 // an error if none matches.
 func TagKind(tag string) (string, error) {
+	return tagKind(tag, validKinds)
+}
+
+func tagKind(tag string, isValidKind func(string) bool) (string, error) {
 	i := strings.Index(tag, "-")
-	if i <= 0 || !validKinds(tag[:i]) {
-		return "", fmt.Errorf("%q is not a valid tag", tag)
+	if i <= 0 {
+		return "", fmt.Errorf(`tags must be in the "<kind>-<id>" format, got %q`, tag)
 	}
-	return tag[:i], nil
+	kind := tag[:i]
+	if !isValidKind(kind) {
+		return "", fmt.Errorf("unsupported tag kind %q", kind)
+	}
+	return kind, nil
 }
 
 func validKinds(kind string) bool {
