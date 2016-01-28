@@ -67,19 +67,19 @@ var parseMachineTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "machine-0",
 	expected: names.NewMachineTag("0"),
 }, {
 	tag: "machine-one",
-	err: names.InvalidTagError("machine-one", names.MachineTagKind),
+	err: names.InvalidTagError("machine-one", names.MachineTagKind, nil),
 }, {
 	tag: "dave",
-	err: names.InvalidTagError("dave", ""),
+	err: tagFormatError("dave", ""),
 }, {
 	tag: "user-one",
-	err: names.InvalidTagError("user-one", names.MachineTagKind),
+	err: names.InvalidTagError("user-one", names.MachineTagKind, nil),
 }}
 
 func (s *machineSuite) TestParseMachineTag(c *gc.C) {

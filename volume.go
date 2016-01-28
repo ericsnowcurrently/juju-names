@@ -41,7 +41,7 @@ func ParseVolumeTag(volumeTag string) (VolumeTag, error) {
 	}
 	dt, ok := tag.(VolumeTag)
 	if !ok {
-		return VolumeTag{}, invalidTagError(volumeTag, VolumeTagKind)
+		return VolumeTag{}, invalidTagError(volumeTag, VolumeTagKind, nil)
 	}
 	return dt, nil
 }

@@ -50,7 +50,7 @@ func ParseMachineTag(machineTag string) (MachineTag, error) {
 	}
 	mt, ok := tag.(MachineTag)
 	if !ok {
-		return MachineTag{}, invalidTagError(machineTag, MachineTagKind)
+		return MachineTag{}, invalidTagError(machineTag, MachineTagKind, nil)
 	}
 	return mt, nil
 }

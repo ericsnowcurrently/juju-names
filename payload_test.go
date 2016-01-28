@@ -57,25 +57,25 @@ func (s *payloadSuite) TestParsePayloadTag(c *gc.C) {
 		err      error
 	}{{
 		tag: "",
-		err: names.InvalidTagError("", ""),
+		err: tagFormatError("", ""),
 	}, {
 		tag: "payload-",
-		err: names.InvalidTagError("payload-", names.PayloadTagKind),
+		err: names.InvalidTagError("payload-", names.PayloadTagKind, nil),
 	}, {
 		tag: "payload-spam",
-		err: names.InvalidTagError("payload-spam", names.PayloadTagKind),
+		err: names.InvalidTagError("payload-spam", names.PayloadTagKind, nil),
 	}, {
 		tag:      "payload-f47ac10b-58cc-4372-a567-0e02b2c3d479",
 		expected: names.NewPayloadTag("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
 	}, {
 		tag: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-		err: names.InvalidTagError("f47ac10b-58cc-4372-a567-0e02b2c3d479", ""),
+		err: unsupportedKindError("f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b"),
 	}, {
 		tag: "unit-f47ac10b-58cc-4372-a567-0e02b2c3d479",
-		err: names.InvalidTagError("unit-f47ac10b-58cc-4372-a567-0e02b2c3d479", names.UnitTagKind),
+		err: names.InvalidTagError("unit-f47ac10b-58cc-4372-a567-0e02b2c3d479", names.UnitTagKind, nil),
 	}, {
 		tag: "action-f47ac10b-58cc-4372-a567-0e02b2c3d479",
-		err: names.InvalidTagError("action-f47ac10b-58cc-4372-a567-0e02b2c3d479", names.PayloadTagKind),
+		err: names.InvalidTagError("action-f47ac10b-58cc-4372-a567-0e02b2c3d479", names.PayloadTagKind, nil),
 	}} {
 		c.Logf("test %d: %s", i, test.tag)
 		got, err := names.ParsePayloadTag(test.tag)

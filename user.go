@@ -131,7 +131,7 @@ func ParseUserTag(tag string) (UserTag, error) {
 	}
 	ut, ok := t.(UserTag)
 	if !ok {
-		return UserTag{}, invalidTagError(tag, UserTagKind)
+		return UserTag{}, invalidTagError(tag, UserTagKind, nil)
 	}
 	return ut, nil
 }

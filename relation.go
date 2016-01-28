@@ -55,7 +55,7 @@ func ParseRelationTag(relationTag string) (RelationTag, error) {
 	}
 	rt, ok := tag.(RelationTag)
 	if !ok {
-		return RelationTag{}, invalidTagError(relationTag, RelationTagKind)
+		return RelationTag{}, invalidTagError(relationTag, RelationTagKind, nil)
 	}
 	return rt, nil
 }

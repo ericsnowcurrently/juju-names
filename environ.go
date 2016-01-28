@@ -23,7 +23,7 @@ func ParseEnvironTag(environTag string) (EnvironTag, error) {
 	}
 	et, ok := tag.(EnvironTag)
 	if !ok {
-		return EnvironTag{}, invalidTagError(environTag, EnvironTagKind)
+		return EnvironTag{}, invalidTagError(environTag, EnvironTagKind, nil)
 	}
 	return et, nil
 }

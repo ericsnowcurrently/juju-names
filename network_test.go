@@ -58,22 +58,22 @@ var parseNetworkTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "network-dave",
 	expected: names.NewNetworkTag("dave"),
 }, {
 	tag: "dave",
-	err: names.InvalidTagError("dave", ""),
+	err: tagFormatError("dave", ""),
 }, {
 	tag: "network-dave/0",
-	err: names.InvalidTagError("network-dave/0", names.NetworkTagKind),
+	err: names.InvalidTagError("network-dave/0", names.NetworkTagKind, nil),
 }, {
 	tag: "network",
-	err: names.InvalidTagError("network", ""),
+	err: tagFormatError("network", ""),
 }, {
 	tag: "user-dave",
-	err: names.InvalidTagError("user-dave", names.NetworkTagKind),
+	err: names.InvalidTagError("user-dave", names.NetworkTagKind, nil),
 }}
 
 func (s *networkSuite) TestParseNetworkTag(c *gc.C) {

@@ -57,22 +57,22 @@ var parseServiceTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "service-dave",
 	expected: names.NewServiceTag("dave"),
 }, {
 	tag: "dave",
-	err: names.InvalidTagError("dave", ""),
+	err: tagFormatError("dave", ""),
 }, {
 	tag: "service-dave/0",
-	err: names.InvalidTagError("service-dave/0", names.ServiceTagKind),
+	err: names.InvalidTagError("service-dave/0", names.ServiceTagKind, nil),
 }, {
 	tag: "service",
-	err: names.InvalidTagError("service", ""),
+	err: tagFormatError("service", ""),
 }, {
 	tag: "user-dave",
-	err: names.InvalidTagError("user-dave", names.ServiceTagKind),
+	err: names.InvalidTagError("user-dave", names.ServiceTagKind, nil),
 }}
 
 func (s *serviceSuite) TestParseServiceTag(c *gc.C) {

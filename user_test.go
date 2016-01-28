@@ -196,7 +196,7 @@ func (s *userSuite) TestParseUserTag(c *gc.C) {
 		err      error
 	}{{
 		tag: "",
-		err: names.InvalidTagError("", ""),
+		err: tagFormatError("", ""),
 	}, {
 		tag:      "user-dave",
 		expected: names.NewUserTag("dave"),
@@ -208,13 +208,13 @@ func (s *userSuite) TestParseUserTag(c *gc.C) {
 		expected: names.NewUserTag("dave@foobar"),
 	}, {
 		tag: "dave",
-		err: names.InvalidTagError("dave", ""),
+		err: tagFormatError("dave", ""),
 	}, {
 		tag: "unit-dave",
-		err: names.InvalidTagError("unit-dave", names.UnitTagKind), // not a valid unit name either
+		err: names.InvalidTagError("unit-dave", names.UnitTagKind, nil), // not a valid unit name either
 	}, {
 		tag: "service-dave",
-		err: names.InvalidTagError("service-dave", names.UserTagKind),
+		err: names.InvalidTagError("service-dave", names.UserTagKind, nil),
 	}} {
 		c.Logf("test %d: %s", i, t.tag)
 		got, err := names.ParseUserTag(t.tag)

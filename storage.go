@@ -45,7 +45,7 @@ func ParseStorageTag(s string) (StorageTag, error) {
 	}
 	st, ok := tag.(StorageTag)
 	if !ok {
-		return StorageTag{}, invalidTagError(s, StorageTagKind)
+		return StorageTag{}, invalidTagError(s, StorageTagKind, nil)
 	}
 	return st, nil
 }

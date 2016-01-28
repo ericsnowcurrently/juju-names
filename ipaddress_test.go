@@ -34,12 +34,12 @@ var parseIPAddressTagTests = []struct {
 	expected names.Tag
 	err      error
 }{
-	{tag: "", err: names.InvalidTagError("", "")},
+	{tag: "", err: tagFormatError("", "")},
 	{tag: "ipaddress-42424242-1111-2222-3333-0123456789ab", expected: names.NewIPAddressTag("42424242-1111-2222-3333-0123456789ab")},
-	{tag: "ipaddress-012345678", err: names.InvalidTagError("ipaddress-012345678", names.IPAddressTagKind)},
-	{tag: "ipaddress-42", err: names.InvalidTagError("ipaddress-42", names.IPAddressTagKind)},
-	{tag: "foobar", err: names.InvalidTagError("foobar", "")},
-	{tag: "space-yadda", err: names.InvalidTagError("space-yadda", names.IPAddressTagKind)}}
+	{tag: "ipaddress-012345678", err: names.InvalidTagError("ipaddress-012345678", names.IPAddressTagKind, nil)},
+	{tag: "ipaddress-42", err: names.InvalidTagError("ipaddress-42", names.IPAddressTagKind, nil)},
+	{tag: "foobar", err: tagFormatError("foobar", "")},
+	{tag: "space-yadda", err: names.InvalidTagError("space-yadda", names.IPAddressTagKind, nil)}}
 
 func (s *ipAddressSuite) TestParseIPAddressTag(c *gc.C) {
 	for i, t := range parseIPAddressTagTests {

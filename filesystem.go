@@ -41,7 +41,7 @@ func ParseFilesystemTag(filesystemTag string) (FilesystemTag, error) {
 	}
 	fstag, ok := tag.(FilesystemTag)
 	if !ok {
-		return FilesystemTag{}, invalidTagError(filesystemTag, FilesystemTagKind)
+		return FilesystemTag{}, invalidTagError(filesystemTag, FilesystemTagKind, nil)
 	}
 	return fstag, nil
 }

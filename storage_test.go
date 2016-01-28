@@ -32,10 +32,10 @@ func (s *storageSuite) TestStorageNameValidity(c *gc.C) {
 func (s *storageSuite) TestParseStorageTag(c *gc.C) {
 	assertParseStorageTag(c, "storage-shared-fs-0", names.NewStorageTag("shared-fs/0"))
 	assertParseStorageTag(c, "storage-store-88", names.NewStorageTag("store/88"))
-	assertParseStorageTagInvalid(c, "", names.InvalidTagError("", ""))
-	assertParseStorageTagInvalid(c, "one", names.InvalidTagError("one", ""))
-	assertParseStorageTagInvalid(c, "storage-", names.InvalidTagError("storage-", names.StorageTagKind))
-	assertParseStorageTagInvalid(c, "machine-0", names.InvalidTagError("machine-0", names.StorageTagKind))
+	assertParseStorageTagInvalid(c, "", tagFormatError("", ""))
+	assertParseStorageTagInvalid(c, "one", tagFormatError("one", ""))
+	assertParseStorageTagInvalid(c, "storage-", names.InvalidTagError("storage-", names.StorageTagKind, nil))
+	assertParseStorageTagInvalid(c, "machine-0", names.InvalidTagError("machine-0", names.StorageTagKind, nil))
 }
 
 func (s *serviceSuite) TestStorageName(c *gc.C) {

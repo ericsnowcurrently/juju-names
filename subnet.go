@@ -43,7 +43,7 @@ func ParseSubnetTag(subnetTag string) (SubnetTag, error) {
 	}
 	subt, ok := tag.(SubnetTag)
 	if !ok {
-		return SubnetTag{}, invalidTagError(subnetTag, SubnetTagKind)
+		return SubnetTag{}, invalidTagError(subnetTag, SubnetTagKind, nil)
 	}
 	return subt, nil
 }

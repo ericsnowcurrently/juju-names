@@ -44,7 +44,7 @@ func ParseSpaceTag(spaceTag string) (SpaceTag, error) {
 	}
 	nt, ok := tag.(SpaceTag)
 	if !ok {
-		return SpaceTag{}, invalidTagError(spaceTag, SpaceTagKind)
+		return SpaceTag{}, invalidTagError(spaceTag, SpaceTagKind, nil)
 	}
 	return nt, nil
 }

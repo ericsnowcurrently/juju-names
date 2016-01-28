@@ -34,10 +34,10 @@ func (s *volumeSuite) TestParseVolumeTag(c *gc.C) {
 	assertParseVolumeTag(c, "volume-0", names.NewVolumeTag("0"))
 	assertParseVolumeTag(c, "volume-88", names.NewVolumeTag("88"))
 	assertParseVolumeTag(c, "volume-0-lxc-0-88", names.NewVolumeTag("0/lxc/0/88"))
-	assertParseVolumeTagInvalid(c, "", names.InvalidTagError("", ""))
-	assertParseVolumeTagInvalid(c, "one", names.InvalidTagError("one", ""))
-	assertParseVolumeTagInvalid(c, "volume-", names.InvalidTagError("volume-", names.VolumeTagKind))
-	assertParseVolumeTagInvalid(c, "machine-0", names.InvalidTagError("machine-0", names.VolumeTagKind))
+	assertParseVolumeTagInvalid(c, "", tagFormatError("", ""))
+	assertParseVolumeTagInvalid(c, "one", tagFormatError("one", ""))
+	assertParseVolumeTagInvalid(c, "volume-", names.InvalidTagError("volume-", names.VolumeTagKind, nil))
+	assertParseVolumeTagInvalid(c, "machine-0", names.InvalidTagError("machine-0", names.VolumeTagKind, nil))
 }
 
 func (s *volumeSuite) TestVolumeMachine(c *gc.C) {

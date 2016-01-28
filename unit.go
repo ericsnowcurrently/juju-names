@@ -39,7 +39,7 @@ func ParseUnitTag(unitTag string) (UnitTag, error) {
 	}
 	ut, ok := tag.(UnitTag)
 	if !ok {
-		return UnitTag{}, invalidTagError(unitTag, UnitTagKind)
+		return UnitTag{}, invalidTagError(unitTag, UnitTagKind, nil)
 	}
 	return ut, nil
 }

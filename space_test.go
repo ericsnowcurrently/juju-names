@@ -57,13 +57,13 @@ var parseSpaceTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "space-1",
 	expected: names.NewSpaceTag("1"),
 }, {
 	tag: "-space1",
-	err: names.InvalidTagError("-space1", ""),
+	err: tagFormatError("-space1", ""),
 }}
 
 func (s *spaceSuite) TestParseSpaceTag(c *gc.C) {

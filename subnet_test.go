@@ -34,7 +34,7 @@ var parseSubnetTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "subnet-10.20.0.0/16",
 	expected: names.NewSubnetTag("10.20.0.0/16"),
@@ -43,25 +43,25 @@ var parseSubnetTagTests = []struct {
 	expected: names.NewSubnetTag("2001:db8::/32"),
 }, {
 	tag: "subnet-fe80::3%zone1/10",
-	err: names.InvalidTagError("subnet-fe80::3%zone1/10", names.SubnetTagKind),
+	err: names.InvalidTagError("subnet-fe80::3%zone1/10", names.SubnetTagKind, nil),
 }, {
 	tag: "subnet-10.20.30.40/16",
-	err: names.InvalidTagError("subnet-10.20.30.40/16", names.SubnetTagKind),
+	err: names.InvalidTagError("subnet-10.20.30.40/16", names.SubnetTagKind, nil),
 }, {
 	tag: "subnet-2001:db8::123/32",
-	err: names.InvalidTagError("subnet-2001:db8::123/32", names.SubnetTagKind),
+	err: names.InvalidTagError("subnet-2001:db8::123/32", names.SubnetTagKind, nil),
 }, {
 	tag: "subnet-foo",
-	err: names.InvalidTagError("subnet-foo", names.SubnetTagKind),
+	err: names.InvalidTagError("subnet-foo", names.SubnetTagKind, nil),
 }, {
 	tag: "subnet-",
-	err: names.InvalidTagError("subnet-", names.SubnetTagKind),
+	err: names.InvalidTagError("subnet-", names.SubnetTagKind, nil),
 }, {
 	tag: "foobar",
-	err: names.InvalidTagError("foobar", ""),
+	err: tagFormatError("foobar", ""),
 }, {
 	tag: "unit-foo-0",
-	err: names.InvalidTagError("unit-foo-0", names.SubnetTagKind),
+	err: names.InvalidTagError("unit-foo-0", names.SubnetTagKind, nil),
 }}
 
 func (s *subnetSuite) TestParseSubnetTag(c *gc.C) {

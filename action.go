@@ -33,7 +33,7 @@ func ParseActionTag(actionTag string) (ActionTag, error) {
 	}
 	at, ok := tag.(ActionTag)
 	if !ok {
-		return ActionTag{}, invalidTagError(actionTag, ActionTagKind)
+		return ActionTag{}, invalidTagError(actionTag, ActionTagKind, nil)
 	}
 	return at, nil
 }

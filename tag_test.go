@@ -49,11 +49,11 @@ func (*tagSuite) TestTagKind(c *gc.C) {
 		c.Logf("test %d: %q -> %q", i, test.tag, test.kind)
 		kind, err := names.TagKind(test.tag)
 		if test.err == "" {
-			c.Assert(test.kind, gc.Equals, kind)
 			c.Assert(err, gc.IsNil)
+			c.Assert(test.kind, gc.Equals, kind)
 		} else {
-			c.Assert(kind, gc.Equals, "")
 			c.Assert(err, gc.ErrorMatches, test.err)
+			c.Assert(kind, gc.Equals, "")
 		}
 	}
 }
@@ -191,7 +191,7 @@ var parseTagTests = []struct {
 	resultId:   "block-storage/0",
 }, {
 	tag:       "foo",
-	resultErr: `"foo" is not a valid tag`,
+	resultErr: `"foo" is not a valid tag: tags must be in the "<kind>-<id>" format`,
 }, {
 	tag:       "ipaddress-",
 	resultErr: `"ipaddress-" is not a valid ipaddress tag`,

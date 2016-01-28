@@ -29,7 +29,7 @@ func ParseModelTag(modelTag string) (ModelTag, error) {
 	}
 	et, ok := tag.(ModelTag)
 	if !ok {
-		return ModelTag{}, invalidTagError(modelTag, ModelTagKind)
+		return ModelTag{}, invalidTagError(modelTag, ModelTagKind, nil)
 	}
 	return et, nil
 }

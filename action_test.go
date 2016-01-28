@@ -18,12 +18,12 @@ var parseActionTagTests = []struct {
 	expected names.Tag
 	err      error
 }{
-	{tag: "", err: names.InvalidTagError("", "")},
+	{tag: "", err: tagFormatError("", "")},
 	{tag: "action-f47ac10b-58cc-4372-a567-0e02b2c3d479", expected: names.NewActionTag("f47ac10b-58cc-4372-a567-0e02b2c3d479")},
-	{tag: "action-012345678", err: names.InvalidTagError("action-012345678", "action")},
-	{tag: "action-1234567", err: names.InvalidTagError("action-1234567", "action")},
-	{tag: "bob", err: names.InvalidTagError("bob", "")},
-	{tag: "service-ned", err: names.InvalidTagError("service-ned", names.ActionTagKind)}}
+	{tag: "action-012345678", err: names.InvalidTagError("action-012345678", "action", nil)},
+	{tag: "action-1234567", err: names.InvalidTagError("action-1234567", "action", nil)},
+	{tag: "bob", err: tagFormatError("bob", "")},
+	{tag: "service-ned", err: names.InvalidTagError("service-ned", names.ActionTagKind, nil)}}
 
 func (s *actionSuite) TestParseActionTag(c *gc.C) {
 	for i, t := range parseActionTagTests {

@@ -77,7 +77,7 @@ func ParseCharmTag(charmTag string) (CharmTag, error) {
 	}
 	ct, ok := tag.(CharmTag)
 	if !ok {
-		return emptyTag, invalidTagError(charmTag, CharmTagKind)
+		return emptyTag, invalidTagError(charmTag, CharmTagKind, nil)
 	}
 	return ct, nil
 }

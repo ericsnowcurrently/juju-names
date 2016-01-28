@@ -34,10 +34,10 @@ func (s *filesystemSuite) TestParseFilesystemTag(c *gc.C) {
 	assertParseFilesystemTag(c, "filesystem-0", names.NewFilesystemTag("0"))
 	assertParseFilesystemTag(c, "filesystem-88", names.NewFilesystemTag("88"))
 	assertParseFilesystemTag(c, "filesystem-0-lxc-0-88", names.NewFilesystemTag("0/lxc/0/88"))
-	assertParseFilesystemTagInvalid(c, "", names.InvalidTagError("", ""))
-	assertParseFilesystemTagInvalid(c, "one", names.InvalidTagError("one", ""))
-	assertParseFilesystemTagInvalid(c, "filesystem-", names.InvalidTagError("filesystem-", names.FilesystemTagKind))
-	assertParseFilesystemTagInvalid(c, "machine-0", names.InvalidTagError("machine-0", names.FilesystemTagKind))
+	assertParseFilesystemTagInvalid(c, "", tagFormatError("", ""))
+	assertParseFilesystemTagInvalid(c, "one", tagFormatError("one", ""))
+	assertParseFilesystemTagInvalid(c, "filesystem-", names.InvalidTagError("filesystem-", names.FilesystemTagKind, nil))
+	assertParseFilesystemTagInvalid(c, "machine-0", names.InvalidTagError("machine-0", names.FilesystemTagKind, nil))
 }
 
 func (s *filesystemSuite) TestFilesystemMachine(c *gc.C) {

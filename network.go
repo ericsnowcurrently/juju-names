@@ -45,7 +45,7 @@ func ParseNetworkTag(networkTag string) (NetworkTag, error) {
 	}
 	nt, ok := tag.(NetworkTag)
 	if !ok {
-		return NetworkTag{}, invalidTagError(networkTag, NetworkTagKind)
+		return NetworkTag{}, invalidTagError(networkTag, NetworkTagKind, nil)
 	}
 	return nt, nil
 }

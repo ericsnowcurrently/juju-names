@@ -75,19 +75,19 @@ var parseUnitTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "unit-dave/0",
 	expected: names.NewUnitTag("dave/0"),
 }, {
 	tag: "dave",
-	err: names.InvalidTagError("dave", ""),
+	err: tagFormatError("dave", ""),
 }, {
 	tag: "unit-dave",
-	err: names.InvalidTagError("unit-dave", names.UnitTagKind), // not a valid unit name either
+	err: names.InvalidTagError("unit-dave", names.UnitTagKind, nil), // not a valid unit name either
 }, {
 	tag: "service-dave",
-	err: names.InvalidTagError("service-dave", names.UnitTagKind),
+	err: names.InvalidTagError("service-dave", names.UnitTagKind, nil),
 }}
 
 func (s *unitSuite) TestParseUnitTag(c *gc.C) {

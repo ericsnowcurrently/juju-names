@@ -40,7 +40,7 @@ func ParsePayloadTag(tag string) (PayloadTag, error) {
 	}
 	pt, ok := t.(PayloadTag)
 	if !ok {
-		return PayloadTag{}, invalidTagError(tag, PayloadTagKind)
+		return PayloadTag{}, invalidTagError(tag, PayloadTagKind, nil)
 	}
 	return pt, nil
 }

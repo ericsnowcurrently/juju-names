@@ -40,7 +40,7 @@ func ParseIPAddressTag(ipAddressTag string) (IPAddressTag, error) {
 	}
 	ipat, ok := tag.(IPAddressTag)
 	if !ok {
-		return IPAddressTag{}, invalidTagError(ipAddressTag, IPAddressTagKind)
+		return IPAddressTag{}, invalidTagError(ipAddressTag, IPAddressTagKind, nil)
 	}
 	return ipat, nil
 }

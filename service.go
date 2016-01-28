@@ -42,7 +42,7 @@ func ParseServiceTag(serviceTag string) (ServiceTag, error) {
 	}
 	st, ok := tag.(ServiceTag)
 	if !ok {
-		return ServiceTag{}, invalidTagError(serviceTag, ServiceTagKind)
+		return ServiceTag{}, invalidTagError(serviceTag, ServiceTagKind, nil)
 	}
 	return st, nil
 }

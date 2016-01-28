@@ -51,35 +51,31 @@ func tagString(tag Tag) string {
 // TagKind returns one of the *TagKind constants for the given tag, or
 // an error if none matches.
 func TagKind(tag string) (string, error) {
-	return tagKind(tag, validKinds)
-}
-
-func tagKind(tag string, isValidKind func(string) bool) (string, error) {
 	kind, _, err := splitTag(tag)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s, got %q", err.Error(), tag)
 	}
-	if !isValidKind(kind) {
-		return "", fmt.Errorf("unsupported tag kind %q", kind)
+	if err := checkKind(kind); err != nil {
+		return "", err
 	}
 	return kind, nil
 }
 
-func validKinds(kind string) bool {
+func checkKind(kind string) error {
 	switch kind {
 	case UnitTagKind, MachineTagKind, ServiceTagKind, EnvironTagKind, UserTagKind,
 		RelationTagKind, NetworkTagKind, ActionTagKind, VolumeTagKind,
 		CharmTagKind, StorageTagKind, FilesystemTagKind, IPAddressTagKind,
 		SpaceTagKind, SubnetTagKind, PayloadTagKind, ModelTagKind:
-		return true
+		return nil
 	}
-	return false
+	return fmt.Errorf("unsupported tag kind %q", kind)
 }
 
 func splitTag(tag string) (kind string, id string, err error) {
 	i := strings.Index(tag, "-")
 	if i <= 0 {
-		return "", "", fmt.Errorf(`tags must be in the "<kind>-<id>" format, got %q`, tag)
+		return "", "", fmt.Errorf(`tags must be in the "<kind>-<id>" format`)
 	}
 	return tag[:i], tag[i+1:], nil
 }
@@ -88,111 +84,119 @@ func splitTag(tag string) (kind string, id string, err error) {
 func ParseTag(tag string) (Tag, error) {
 	kind, id, err := splitTag(tag)
 	if err != nil {
-		return nil, invalidTagError(tag, "")
+		return nil, invalidTagError(tag, "", err)
 	}
+	if err := checkKind(kind); err != nil {
+		return nil, invalidTagError(tag, "", err)
+	}
+
 	switch kind {
 	case UnitTagKind:
 		id = unitTagSuffixToId(id)
 		if !IsValidUnit(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewUnitTag(id), nil
 	case MachineTagKind:
 		id = machineTagSuffixToId(id)
 		if !IsValidMachine(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewMachineTag(id), nil
 	case ServiceTagKind:
 		if !IsValidService(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewServiceTag(id), nil
 	case UserTagKind:
 		if !IsValidUser(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewUserTag(id), nil
 	case EnvironTagKind:
 		if !IsValidEnvironment(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewEnvironTag(id), nil
 	case ModelTagKind:
 		if !IsValidModel(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewModelTag(id), nil
 	case RelationTagKind:
 		id = relationTagSuffixToKey(id)
 		if !IsValidRelation(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewRelationTag(id), nil
 	case NetworkTagKind:
 		if !IsValidNetwork(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewNetworkTag(id), nil
 	case ActionTagKind:
 		if !IsValidAction(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewActionTag(id), nil
 	case VolumeTagKind:
 		id = volumeTagSuffixToId(id)
 		if !IsValidVolume(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewVolumeTag(id), nil
 	case CharmTagKind:
 		if !IsValidCharm(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewCharmTag(id), nil
 	case StorageTagKind:
 		id = storageTagSuffixToId(id)
 		if !IsValidStorage(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewStorageTag(id), nil
 	case FilesystemTagKind:
 		id = filesystemTagSuffixToId(id)
 		if !IsValidFilesystem(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewFilesystemTag(id), nil
 	case IPAddressTagKind:
 		uuid, err := utils.UUIDFromString(id)
 		if err != nil {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewIPAddressTag(uuid.String()), nil
 	case SubnetTagKind:
 		if !IsValidSubnet(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewSubnetTag(id), nil
 	case SpaceTagKind:
 		if !IsValidSpace(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewSpaceTag(id), nil
 	case PayloadTagKind:
 		if !IsValidPayload(id) {
-			return nil, invalidTagError(tag, kind)
+			return nil, invalidTagError(tag, kind, nil)
 		}
 		return NewPayloadTag(id), nil
 	default:
-		return nil, invalidTagError(tag, "")
+		return nil, invalidTagError(tag, "", nil)
 	}
 }
 
-func invalidTagError(tag, kind string) error {
-	if kind != "" {
-		return fmt.Errorf("%q is not a valid %s tag", tag, kind)
+func invalidTagError(tag, kind string, cause error) error {
+	var causeStr string
+	if cause != nil {
+		causeStr = ": " + cause.Error()
 	}
-	return fmt.Errorf("%q is not a valid tag", tag)
+	if kind != "" {
+		return fmt.Errorf("%q is not a valid %s tag%s", tag, kind, causeStr)
+	}
+	return fmt.Errorf("%q is not a valid tag%s", tag, causeStr)
 }
 
 // ReadableString returns a human-readable string from the tag passed in.

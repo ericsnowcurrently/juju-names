@@ -66,7 +66,7 @@ var parseRelationTagTests = []struct {
 	err      error
 }{{
 	tag: "",
-	err: names.InvalidTagError("", ""),
+	err: tagFormatError("", ""),
 }, {
 	tag:      "relation-wordpress:db mysql:db",
 	expected: names.NewRelationTag("wordpress:db mysql:db"),
@@ -75,10 +75,10 @@ var parseRelationTagTests = []struct {
 	expected: names.NewRelationTag("wordpress:mysql"),
 }, {
 	tag: "dave",
-	err: names.InvalidTagError("dave", ""),
+	err: tagFormatError("dave", ""),
 }, {
 	tag: "service-dave",
-	err: names.InvalidTagError("service-dave", names.RelationTagKind),
+	err: names.InvalidTagError("service-dave", names.RelationTagKind, nil),
 }}
 
 func (s *relationSuite) TestParseRelationTag(c *gc.C) {
